@@ -13,8 +13,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		C1223374E1C8D80943F8A7F3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		DD4463B71CCD3CF800F0C65F /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "../../../Library/Developer/Xcode/DerivedData/Glass-dgjtqjkygmpoahamwnhtmagbqkin/Build/Products/Debug-iphonesimulator/libPods.a"; sourceTree = "<group>"; };
 		DD4463E01CCD426F00F0C65F /* Glass.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Glass.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD4463E21CCD426F00F0C65F /* Glass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Glass.h; sourceTree = "<group>"; };
 		DD4463E41CCD426F00F0C65F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -33,15 +31,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6E76F50A6283AA99E796C288 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				DD4463B71CCD3CF800F0C65F /* libPods.a */,
-				C1223374E1C8D80943F8A7F3 /* libPods.a */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		DD4463E11CCD426F00F0C65F /* Glass */ = {
 			isa = PBXGroup;
 			children = (
@@ -66,7 +55,6 @@
 			children = (
 				DD4463E11CCD426F00F0C65F /* Glass */,
 				DD76E4C81CC3F67E00D2A470 /* Products */,
-				6E76F50A6283AA99E796C288 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -302,6 +290,7 @@
 				DD4463E71CCD426F00F0C65F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DD76E4C11CC3F67E00D2A470 /* Build configuration list for PBXProject "Glass" */ = {
 			isa = XCConfigurationList;

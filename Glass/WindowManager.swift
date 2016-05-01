@@ -312,17 +312,18 @@ public class WindowManager {
       fallthrough
     case.Cancelled:
       let velocity = recognizer.velocityInView(window).y
-      if window.frame.origin.y >= 0.5 * CGRectGetHeight(UIScreen.mainScreen().bounds) || abs(velocity) >= 50 { // TODO make velocity here configurable
-        // Force downwards to either offset or dimiss if we're half way down the screen or if the velocity downwards is high enough
-        switch window.type {
-        case .Dismissable:
-          animate(window, frame: frame(window.frame, y: CGRectGetHeight(UIScreen.mainScreen().bounds)), style: .Linear, velocity: 0.0, remove: true)
-        case .Offsetable:
-          animate(window, frame: frame(window.frame, y: offsetableWindowYOffset), style: .Spring, velocity: velocity, remove: false)
+      if abs(velocity) >= 50 { // TODO make threshold velocity configurable
+        if velocity > 0 {
+          finishPanDownwards(window, velocity: velocity)
+        } else {
+          finishPanUpwards(window, velocity: velocity)
         }
       } else {
-        // Otherwise, always animate back to the top of the screen
-        animate(window, frame: frame(window.frame, y: 0), style: .Linear, velocity: 0.0, remove: false)
+        if window.frame.origin.y >= 0.5 * CGRectGetWidth(UIScreen.mainScreen().bounds) {
+          finishPanDownwards(window, velocity: velocity)
+        } else {
+          finishPanUpwards(window, velocity: velocity)
+        }
       }
     default:
       break // Nothing to do when failed/possible
@@ -361,6 +362,21 @@ public class WindowManager {
   }
   
   // MARK: Private
+  
+  private func finishPanUpwards(window: Window, velocity: CGFloat) {
+    // Otherwise, always animate back to the top of the screen
+    animate(window, frame: frame(window.frame, y: 0), style: .Linear, velocity: 0.0, remove: false)
+  }
+  
+  private func finishPanDownwards(window: Window, velocity: CGFloat) {
+    // Force downwards to either offset or dimiss if we're half way down the screen or if the velocity downwards is high enough
+    switch window.type {
+    case .Dismissable:
+      animate(window, frame: frame(window.frame, y: CGRectGetHeight(UIScreen.mainScreen().bounds)), style: .Linear, velocity: 0.0, remove: true)
+    case .Offsetable:
+      animate(window, frame: frame(window.frame, y: offsetableWindowYOffset), style: .Spring, velocity: velocity, remove: false)
+    }
+  }
   
   private func frame(frame: CGRect, y: CGFloat) -> CGRect {
     return CGRectMake(frame.origin.x, y, CGRectGetWidth(frame), CGRectGetHeight(frame))
