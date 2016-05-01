@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name          = "Glass"
-  s.version       = "0.0.1"
+  s.version       = "0.0.2"
   s.summary       = "iOS Layered Window Manager"
   s.homepage      = "https://github.com/comyarzaheri/Glass"
   s.license       = { :type => "MIT", :file => "LICENSE" }
