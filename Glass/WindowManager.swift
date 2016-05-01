@@ -178,7 +178,7 @@ public class WindowManager {
   /// The maximum y offset to allow a pan gesture to be recognized.
   ///
   /// For example, if `panGestureMaxBeginYOffset = 50`, then the area in which
-  /// a pan gesture could begin would like this:
+  /// a pan gesture could begin would look like this:
   ///
   ///      --------------------
   ///     |********************|
@@ -194,6 +194,11 @@ public class WindowManager {
   ///     |                    |
   ///      --------------------
   public var panGestureMaxBeginYOffset: CGFloat = 0.33 * CGRectGetHeight(UIScreen.mainScreen().bounds)
+  
+  /// The amount of resistance against movement when panning the top window into
+  /// a negative y-value. A value of of 1.0 resists all movement; a value of
+  /// 0.0 doesn't resist movement at all.
+  public var panGestureNegativeVerticalResistance = 0.9
   
   // MARK: Animation properties
   
@@ -379,6 +384,7 @@ public class WindowManager {
   }
   
   private func frame(frame: CGRect, y: CGFloat) -> CGRect {
+    let y = y >= 0 ? y : y * CGFloat(1.0 - panGestureNegativeVerticalResistance)
     return CGRectMake(frame.origin.x, y, CGRectGetWidth(frame), CGRectGetHeight(frame))
   }
   
