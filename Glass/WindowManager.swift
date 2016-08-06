@@ -39,12 +39,12 @@ public enum WindowType {
    Indicates the window is dismissable by allowing the user to pan the window
    off the screen.
    */
-  case Dismissable
+  case dismissable
   
   /**
    Indicates the window is only offsetable when panned by the user.
    */
-  case Offsetable
+  case offsetable
 }
 
 
@@ -56,18 +56,18 @@ public enum AnimationStyle {
   /**
    Indicates no animation should be performed.
    */
-  case None
+  case none
   
   /**
    Performs a linear interpolation from the current value to the next value.
    */
-  case Linear
+  case linear
   
   /**
    Performs a spring-like, physics-based interpolation from the current value to
    the next value.
    */
-  case Spring
+  case spring
 }
 
 
@@ -84,7 +84,7 @@ public protocol WindowManagerDelegate {
    - parameter type: The type of the top window.
    - parameter frame: The frame to which the top window was panned.
    */
-  func didPanTopWindow(rootViewController: UIViewController, type: WindowType, frame: CGRect)
+  func didPanTopWindow(_ rootViewController: UIViewController, type: WindowType, frame: CGRect)
   
   /**
    Indicates the top window will be animated.
@@ -93,7 +93,7 @@ public protocol WindowManagerDelegate {
    - parameter style: The animation style that will be used.
    - parameter frame: The frame to which the top window will be animated.
    */
-  func willAnimateTopWindow(rootViewController: UIViewController, type: WindowType, style: AnimationStyle, frame: CGRect)
+  func willAnimateTopWindow(_ rootViewController: UIViewController, type: WindowType, style: AnimationStyle, frame: CGRect)
   
   /**
    Indicates the top window finished animating.
@@ -102,32 +102,32 @@ public protocol WindowManagerDelegate {
    - parameter style: The animation style that will be used.
    - parameter frame: The frame to which the top window will be animated.
    */
-  func didAnimateTopWindow(rootViewController: UIViewController, type: WindowType, style: AnimationStyle, frame: CGRect)
+  func didAnimateTopWindow(_ rootViewController: UIViewController, type: WindowType, style: AnimationStyle, frame: CGRect)
   
   /**
    Indicates the top window was removed.
    - parameter rootViewController: The root view controller for the top window.
    - parameter type: The type of the top window.
    */
-  func didRemoveTopWindow(rootViewController: UIViewController, type: WindowType)
+  func didRemoveTopWindow(_ rootViewController: UIViewController, type: WindowType)
 }
 
 // Minor hack to allow optional protocol methods without adding @objc to everything
 public extension WindowManagerDelegate {
   
-  func didPanTopWindow(rootViewController: UIViewController, type: WindowType, frame: CGRect) {
+  func didPanTopWindow(_ rootViewController: UIViewController, type: WindowType, frame: CGRect) {
     // Nothing to do
   }
   
-  func willAnimateTopWindow(rootViewController: UIViewController, type: WindowType, style: AnimationStyle, frame: CGRect) {
+  func willAnimateTopWindow(_ rootViewController: UIViewController, type: WindowType, style: AnimationStyle, frame: CGRect) {
     // Nothing to do
   }
   
-  func didAnimateTopWindow(rootViewController: UIViewController, type: WindowType, style: AnimationStyle, frame: CGRect) {
+  func didAnimateTopWindow(_ rootViewController: UIViewController, type: WindowType, style: AnimationStyle, frame: CGRect) {
     // Nothing to do
   }
   
-  func didRemoveTopWindow(rootViewController: UIViewController, type: WindowType) {
+  func didRemoveTopWindow(_ rootViewController: UIViewController, type: WindowType) {
     // Nothing to do
   }
 }
@@ -168,7 +168,7 @@ public class WindowManager {
   // MARK: Window properties
   
   /// The y offset to use for windows of type `Offsetable`
-  public var offsetableWindowYOffset: CGFloat = 0.85 * CGRectGetHeight(UIScreen.mainScreen().bounds)
+  public var offsetableWindowYOffset: CGFloat = 0.85 * UIScreen.main.bounds.height
   
   // MARK: Gesture properties
   
@@ -193,7 +193,7 @@ public class WindowManager {
   ///     |                    |
   ///     |                    |
   ///      --------------------
-  public var panGestureMaxBeginYOffset: CGFloat = 0.33 * CGRectGetHeight(UIScreen.mainScreen().bounds)
+  public var panGestureMaxBeginYOffset: CGFloat = 0.33 * UIScreen.main.bounds.height
   
   /// The amount of resistance against movement when panning the top window into
   /// a negative y-value. A value of of 1.0 resists all movement; a value of
@@ -239,8 +239,8 @@ public class WindowManager {
    - parameter rootViewController: The root view controller of the new window to push.
    - parameter type: The type of the new window.
    */
-  public func pushWindow(rootViewController: UIViewController, type: WindowType) {
-    return pushWindow(rootViewController, type: type, style: .Spring)
+  public func pushWindow(_ rootViewController: UIViewController, type: WindowType) {
+    return pushWindow(rootViewController, type: type, style: .spring)
   }
   
   /**
@@ -249,7 +249,7 @@ public class WindowManager {
    - parameter type: The type of the new window.
    - parameter style: The animation style to use when pushing the new window.
    */
-  public func pushWindow(rootViewController: UIViewController, type: WindowType, style: AnimationStyle) {
+  public func pushWindow(_ rootViewController: UIViewController, type: WindowType, style: AnimationStyle) {
     return pushWindow(rootViewController, type: type, style: style, gesturePredicate: defaultGesturePredicate)
   }
   
@@ -260,14 +260,14 @@ public class WindowManager {
    - parameter style: The animation style to use when pushing the new window.
    - parameter gesturePredicate: The predicate to indicate when a pan gesture should be allowed to begin on this window.
    */
-  public func pushWindow(rootViewController: UIViewController, type: WindowType, style: AnimationStyle, gesturePredicate: GesturePredicate) {
-    let window = Window(frame: UIScreen.mainScreen().bounds, manager: self, type: type, predicate: gesturePredicate)
+  public func pushWindow(_ rootViewController: UIViewController, type: WindowType, style: AnimationStyle, gesturePredicate: GesturePredicate) {
+    let window = Window(frame: UIScreen.main.bounds, manager: self, type: type, predicate: gesturePredicate)
     window.rootViewController = rootViewController
-    window.backgroundColor = UIColor.clearColor()
+    window.backgroundColor = UIColor.clear
     window.windowLevel = UIWindowLevelStatusBar + CGFloat(stack.count)
-    window.hidden = false
+    window.isHidden = false
     stack.append(window)
-    window.frame = frame(window.frame, y: CGRectGetHeight(UIScreen.mainScreen().bounds))
+    window.frame = frame(window.frame, y: UIScreen.main.bounds.height)
     animate(window, frame: frame(window.frame, y: 0), style: style, velocity: 0.0, remove: false)
   }
   
@@ -278,7 +278,7 @@ public class WindowManager {
    - parameter y: The y offset to set for the top window.
    - parameter style: The animation style to use.
    */
-  public func setTopWindowOffset(y: CGFloat, style: AnimationStyle) {
+  public func setTopWindowOffset(_ y: CGFloat, style: AnimationStyle) {
     animate(stack.last!, frame: frame(stack.last!.frame, y: y), style: style, velocity: 0.0, remove: false)
   }
   
@@ -297,26 +297,26 @@ public class WindowManager {
    
    If `animated` is true, then a linear animation will always be used.
    */
-  public func popWindow(animated: Bool) {
+  public func popWindow(_ animated: Bool) {
     let window = stack.last!
-    animate(window, frame: frame(window.frame, y: CGRectGetHeight(UIScreen.mainScreen().bounds)), style: .Linear, velocity: 0.0, remove: true)
+    animate(window, frame: frame(window.frame, y: UIScreen.main.bounds.height), style: .linear, velocity: 0.0, remove: true)
   }
   
   // MARK: Gestures
   
-  func didRecognizePanGesture(window: Window, recognizer: UIPanGestureRecognizer) {
+  func didRecognizePanGesture(_ window: Window, recognizer: UIPanGestureRecognizer) {
     switch recognizer.state {
-    case .Began:
+    case .began:
       panGestureStartY = window.frame.origin.y
       fallthrough
-    case .Changed:
-      let translation = panGestureStartY + recognizer.translationInView(window).y
+    case .changed:
+      let translation = panGestureStartY + recognizer.translation(in: window).y
       window.frame = frame(window.frame, y: translation)
       delegate?.didPanTopWindow(window.rootViewController!, type: window.type, frame: window.frame)
-    case .Ended:
+    case .ended:
       fallthrough
-    case.Cancelled:
-      let velocity = recognizer.velocityInView(window).y
+    case.cancelled:
+      let velocity = recognizer.velocity(in: window).y
       if abs(velocity) >= 50 { // TODO make threshold velocity configurable
         if velocity > 0 {
           finishPanDownwards(window, velocity: velocity)
@@ -324,7 +324,7 @@ public class WindowManager {
           finishPanUpwards(window, velocity: velocity)
         }
       } else {
-        if window.frame.origin.y >= 0.5 * CGRectGetWidth(UIScreen.mainScreen().bounds) {
+        if window.frame.origin.y >= 0.5 * UIScreen.main.bounds.width {
           finishPanDownwards(window, velocity: velocity)
         } else {
           finishPanUpwards(window, velocity: velocity)
@@ -335,16 +335,16 @@ public class WindowManager {
     }
   }
   
-  func didRecognizeTapGesture(window: Window, recognizer: UITapGestureRecognizer) {
+  func didRecognizeTapGesture(_ window: Window, recognizer: UITapGestureRecognizer) {
     switch window.type {
-    case .Offsetable:
-      animate(window, frame: frame(window.frame, y: 0), style: .Linear, velocity: 0.0, remove: false)
+    case .offsetable:
+      animate(window, frame: frame(window.frame, y: 0), style: .linear, velocity: 0.0, remove: false)
     default:
       break
     }
   }
   
-  func gestureRecognizerShouldBegin(window: Window, recognizer: UIGestureRecognizer) -> Bool {
+  func gestureRecognizerShouldBegin(_ window: Window, recognizer: UIGestureRecognizer) -> Bool {
     if window == stack.last {
       // Only the top most window in our stack will ever be allowed to have it's
       // gesture recognizers begin
@@ -353,14 +353,14 @@ public class WindowManager {
           // Only inspect the gesture recognizer if the predicate indicates we're
           // in a state to allow this
           let panGestureRecognizer = recognizer as! UIPanGestureRecognizer
-          let velocity = panGestureRecognizer.velocityInView(window)
-          let location = panGestureRecognizer.locationInView(window)
+          let velocity = panGestureRecognizer.velocity(in: window)
+          let location = panGestureRecognizer.location(in: window)
           return location.y <= panGestureMaxBeginYOffset && abs(velocity.y) >= panGestureThresholdYVelocity
         }
         return false
       } else if recognizer.dynamicType == UITapGestureRecognizer.self {
         // The tap gesture should only ever work if the window is currently offset
-        return window.type == .Offsetable && window.frame.origin.y != 0
+        return window.type == .offsetable && window.frame.origin.y != 0
       }
     }
     return false
@@ -368,31 +368,31 @@ public class WindowManager {
   
   // MARK: Private
   
-  private func finishPanUpwards(window: Window, velocity: CGFloat) {
+  private func finishPanUpwards(_ window: Window, velocity: CGFloat) {
     // Otherwise, always animate back to the top of the screen
-    animate(window, frame: frame(window.frame, y: 0), style: .Linear, velocity: 0.0, remove: false)
+    animate(window, frame: frame(window.frame, y: 0), style: .linear, velocity: 0.0, remove: false)
   }
   
-  private func finishPanDownwards(window: Window, velocity: CGFloat) {
+  private func finishPanDownwards(_ window: Window, velocity: CGFloat) {
     // Force downwards to either offset or dimiss if we're half way down the screen or if the velocity downwards is high enough
     switch window.type {
-    case .Dismissable:
-      animate(window, frame: frame(window.frame, y: CGRectGetHeight(UIScreen.mainScreen().bounds)), style: .Linear, velocity: 0.0, remove: true)
-    case .Offsetable:
-      animate(window, frame: frame(window.frame, y: offsetableWindowYOffset), style: .Spring, velocity: velocity, remove: false)
+    case .dismissable:
+      animate(window, frame: frame(window.frame, y: UIScreen.main.bounds.height), style: .linear, velocity: 0.0, remove: true)
+    case .offsetable:
+      animate(window, frame: frame(window.frame, y: offsetableWindowYOffset), style: .spring, velocity: velocity, remove: false)
     }
   }
   
-  private func frame(frame: CGRect, y: CGFloat) -> CGRect {
+  private func frame(_ frame: CGRect, y: CGFloat) -> CGRect {
     let y = y >= 0 ? y : y * CGFloat(1.0 - panGestureNegativeVerticalResistance)
-    return CGRectMake(frame.origin.x, y, CGRectGetWidth(frame), CGRectGetHeight(frame))
+    return CGRect(x: frame.origin.x, y: y, width: frame.width, height: frame.height)
   }
   
-  private func animate(window: Window, frame: CGRect, style: AnimationStyle, velocity: CGFloat, remove: Bool) {
+  private func animate(_ window: Window, frame: CGRect, style: AnimationStyle, velocity: CGFloat, remove: Bool) {
     delegate?.willAnimateTopWindow(window.rootViewController!, type: window.type, style: style, frame: frame)
     switch style {
-    case .Linear:
-      UIView.animateWithDuration(linearAnimationDuration, animations: {
+    case .linear:
+      UIView.animate(withDuration: linearAnimationDuration, animations: {
         window.frame = frame
       }) { (completed: Bool) in
         let top = self.stack.last!
@@ -402,8 +402,8 @@ public class WindowManager {
         }
         self.delegate?.didAnimateTopWindow(top.rootViewController!, type: top.type, style: style, frame: frame)
       }
-    case .Spring:
-      UIView.animateWithDuration(springAnimationDuration, delay: 0, usingSpringWithDamping: springDamping, initialSpringVelocity: max(0.1, min(velocity, 1.0)), options: .BeginFromCurrentState, animations: {
+    case .spring:
+      UIView.animate(withDuration: springAnimationDuration, delay: 0, usingSpringWithDamping: springDamping, initialSpringVelocity: max(0.1, min(velocity, 1.0)), options: .beginFromCurrentState, animations: {
           window.frame = frame
         }, completion: { (completed: Bool) in
           let top = self.stack.last!

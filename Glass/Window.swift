@@ -56,17 +56,17 @@ class Window: UIWindow, UIGestureRecognizerDelegate {
     fatalError("init(coder:) has not been implemented")
   }
   
-  @objc func didRecognizePanGesture(recognizer: UIPanGestureRecognizer) {
+  @objc func didRecognizePanGesture(_ recognizer: UIPanGestureRecognizer) {
     manager.didRecognizePanGesture(self, recognizer: recognizer)
   }
   
-  @objc func didRecognizeTapGesture(recognizer: UITapGestureRecognizer) {
+  @objc func didRecognizeTapGesture(_ recognizer: UITapGestureRecognizer) {
     manager.didRecognizeTapGesture(self, recognizer: recognizer)
   }
   
   // MARK: UIGestureRecognizerDelegate
   
-  override func gestureRecognizerShouldBegin(recognizer: UIGestureRecognizer) -> Bool {
+  override func gestureRecognizerShouldBegin(_ recognizer: UIGestureRecognizer) -> Bool {
     return manager.gestureRecognizerShouldBegin(self, recognizer: recognizer)
   }
 }

@@ -110,6 +110,7 @@
 				TargetAttributes = {
 					DD4463DF1CCD426F00F0C65F = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -169,6 +170,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.comyarzaheri.Glass;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -188,6 +190,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.comyarzaheri.Glass;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
