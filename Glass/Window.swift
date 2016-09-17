@@ -35,11 +35,11 @@ class Window: UIWindow, UIGestureRecognizerDelegate {
   let type: WindowType
   let predicate: GesturePredicate
   
-  private unowned let manager: WindowManager
-  private let panGestureRecognizer = UIPanGestureRecognizer()
-  private let tapGestureRecognizer = UITapGestureRecognizer()
+  fileprivate unowned let manager: WindowManager
+  fileprivate let panGestureRecognizer = UIPanGestureRecognizer()
+  fileprivate let tapGestureRecognizer = UITapGestureRecognizer()
   
-  init(frame: CGRect, manager: WindowManager, type: WindowType, predicate: GesturePredicate) {
+  init(frame: CGRect, manager: WindowManager, type: WindowType, predicate: @escaping GesturePredicate) {
     self.manager = manager
     self.type = type
     self.predicate = predicate
@@ -56,17 +56,17 @@ class Window: UIWindow, UIGestureRecognizerDelegate {
     fatalError("init(coder:) has not been implemented")
   }
   
-  @objc func didRecognizePanGesture(recognizer: UIPanGestureRecognizer) {
+  @objc func didRecognizePanGesture(_ recognizer: UIPanGestureRecognizer) {
     manager.didRecognizePanGesture(self, recognizer: recognizer)
   }
   
-  @objc func didRecognizeTapGesture(recognizer: UITapGestureRecognizer) {
+  @objc func didRecognizeTapGesture(_ recognizer: UITapGestureRecognizer) {
     manager.didRecognizeTapGesture(self, recognizer: recognizer)
   }
   
   // MARK: UIGestureRecognizerDelegate
   
-  override func gestureRecognizerShouldBegin(recognizer: UIGestureRecognizer) -> Bool {
+  override func gestureRecognizerShouldBegin(_ recognizer: UIGestureRecognizer) -> Bool {
     return manager.gestureRecognizerShouldBegin(self, recognizer: recognizer)
   }
 }
