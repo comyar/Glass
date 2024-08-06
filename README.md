@@ -1,10 +1,6 @@
 ![](header.png)
 
 # Overview
-[![Version](http://img.shields.io/cocoapods/v/Glass.svg)](http://cocoapods.org/?q=Glass)
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/comyarzaheri/Glass)
-[![Platform](http://img.shields.io/cocoapods/p/Glass.svg)]()
-[![License](http://img.shields.io/cocoapods/l/Glass.svg)](https://github.com/comyarzaheri/Glass/blob/master/LICENSE)
 
 Glass is a gesture-based, layered window manager that allows you to create interfaces similar to those found in [Facebook Paper](https://www.facebook.com/paper/). Glass uses UIKit Dynamics in order to create beautiful, physics-based animations that allow your interfaces to feel natural.
 
